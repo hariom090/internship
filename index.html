@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <div class="main">
+    <div class="container">
+        <div class="search">
+            <input type="text" placeholder="Enter city name" spellcheck="false">
+            <button>
+                <img src="img/search.png" >
+            </button>
+        </div>
+   <div class="weather">
+    <div class="dis-img">
+            
+        <img src="img/clear.png" class="whether-img">
+  
+</div>
+<div class="temp">
+    <p class="display"><div>°c</div>
+    </p>
+  
+</div >
+<div class="city">New York</div>
+
+<div class="ex-info">
+    <div class="humidity">
+        <img src="img/humidity.png" id="humidity">
+        <div><p class="humid"></p>
+        <p>Humidity</p></div>
+    </div>
+    <div class="wind">
+        <img src="img/wind.png" id="wind">
+        <div>
+            <p class="speed">15 Km/hr</p>
+        <p>Wind Speed</p>
+        </div>
+    </div>
+</div>
+   </div>
+
+    </div>
+   </div>
+    <script>
+        const whetherimage = document.querySelector(".whether-img");
+        const apikey = "2cf65afdd9740faf0a57f980a037bed5";
+        const apiurl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+        let cityname = document.querySelector(".search input");
+        let searchbtn = document.querySelector(".search button");
+       async function checkwhether(city){
+           const response =await fetch(apiurl + city + `&appid=${apikey}`);
+           var data =await response.json();
+        //    console.log(data)
+            document.querySelector(".weather").style.display = "block";
+            document.querySelector(".city").innerHTML = data.name;
+            document.querySelector(".speed").innerHTML = data.wind.speed +" km/h";
+            document.querySelector(".humid").innerHTML = data.main.humidity +"%";
+            document.querySelector(".display").innerHTML = Math.round(data.main.temp);
+            let whe_data = data.weather[0].main;
+            // console.log(whe_data);
+            switch(whe_data){
+                case "Clear":
+                // console.log(whe_data);
+                    whetherimage.src ="img/clear.png";
+                    break;
+                case "Clouds":
+                    whetherimage.src = "img/clouds.png";
+                    break;
+                case "Rain":
+                    whetherimage.src = "img/rain.png";
+                    break;
+                case "Mist": 
+                    whetherimage.src = "img/mist.png";
+                    break;
+                case "Drizzle": 
+                    whetherimage.src = "img/drizzle.png";
+                    break;
+                case "Snow": 
+                    whetherimage.src = "img/snow.png";
+                    break;
+                default :
+                whetherimage.src ="img/clear.png";
+                    break;
+                
+            }
+        }
+        searchbtn.addEventListener("click",()=>{
+            checkwhether(cityname.value)
+        })
+        
+    </script>
+</body>
+</html>
